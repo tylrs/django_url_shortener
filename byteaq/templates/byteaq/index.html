@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Home</title>
+  </head>
+  <body>
+    <div>
+        <h1>Byteaq</h1>
+        <h3>Make a Tiny Tiny URL</h3>
+    </div>
+    <form action="{% url 'byteaq:shrinkify' %}" method="post">
+      <input type="text" name="shrinkify" id="shrinkify"/>
+      <label for="shrinkify"/>
+      <input type="submit" value="Shrinkify"/>
+    </form>
+    <form action="{% url 'byteaq:expand' %}" method="post"></form>
+      {% csrf_token %}
+      <input type="text" name="expand" id="expand"/>
+      <label for="expand"/>
+      <input type="submit" value="Expand"/>
+    </form>
+  </body>
+</html>
