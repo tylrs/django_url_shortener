@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("/shorten", views.shorten, name="shorten"),
-    path("/expand", views.expand, name="expand"),
+    # path("/shorten", views.shorten, name="shorten"),
+    # path("/expand", views.expand, name="expand"),
 ]
