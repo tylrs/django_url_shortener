@@ -8,7 +8,7 @@ class ShrinkifyViewTests(TestCase):
         If the URL can be shrinkified correctly, it should redirect
         """
 
-        params = {"shrinkify": "https://byteaq.com/c002178"}
+        params = {"shrinkify": "https://example.com"}
         response = self.client.post(reverse("byteaq:shrinkify"), params, follow=True)
         url = Url.objects.first()
 
@@ -17,7 +17,22 @@ class ShrinkifyViewTests(TestCase):
                              status_code=302)
         self.assertTemplateUsed(response, template_name="byteaq/shrinkify_results.html")
         self.assertEqual(response.context["url"], url)
-        
+
+    def test_duplicate_successful_shrinkify(self):
+        """
+        If the URL has already been shrinkified, it can be shrinkified again and will return a different short url
+        """
+        url = Url.objects.create(
+            short_url="https://byteaq.com/c002178",
+            long_url="https://example.com"
+        )
+    
+        params = {"shrinkify": "https://example.com"}
+        response = self.client.post(reverse("byteaq:shrinkify"), params, follow=True)
+    
+        self.assertEqual(response.context["url"].long_url, url.long_url)
+        self.assertNotEqual(response.context["url"].short_url, url.short_url)
+
 
 
 
