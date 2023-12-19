@@ -2,19 +2,35 @@ from django.test import TestCase
 from .models import Url
 from django.urls import reverse
 
+class ShrinkifyViewTests(TestCase):
+    def test_successful_shrinkify(self):
+        """
+        If the URL can be shrinkified correctly, it should redirect
+        """
+
+        params = {"shrinkify": "https://byteaq.com/c002178"}
+        response = self.client.post(reverse("byteaq:shrinkify"), params, follow=True)
+        url = Url.objects.first()
+
+        self.assertRedirects(response, 
+                             reverse("byteaq:shrinkify_results", args=(1,)), 
+                             status_code=302)
+        self.assertTemplateUsed(response, template_name="byteaq/shrinkify_results.html")
+        self.assertEqual(response.context["url"], url)
+        
+
+
+
 class ExpandViewTests(TestCase):
     def test_no_matching_short_url(self):
         """
         If no matching short url is found it should return 404
         """
         url = reverse("byteaq:expand")
-        params = {"expand": "https://byteaq.com/c002178"}
-        print(f'LOOK AT URL>> {url} PARAMS: {params}')
+        params = {"expand": "https://byteaq.com/c002169"}
         response = self.client.get(url, params)
-        print(f'RESPONSE>>>{response}')
+        
         self.assertEqual(response.status_code, 404)
-        # self.assertContains(response, "No polls are available.")
-        # self.assertQuerySetEqual(response.context["latest_question_list"], [])
 
     def test_matching_short_url(self):
         """
@@ -26,8 +42,6 @@ class ExpandViewTests(TestCase):
         )
         params = {"expand": "https://byteaq.com/c002178"}
         response = self.client.get(reverse("byteaq:expand"), params)
-        self.assertContains(response, "c002178")
-        # self.assertQuerySetEqual(
-        #     response.context["latest_question_list"],
-        #     [url],
-        # )
+
+        self.assertEqual(response.context["url"], url)
+        self.assertTemplateUsed(response, template_name="byteaq/expand_results.html")
