@@ -1,3 +1,6 @@
+## Overview
+- Byteaq inspired by Bitly (aq is the top level domain code for Antarctica like ly is the code for Libya)
+
 ## Set Up
 1. Install Python 3.11
     -  if using homebrew on a mac, run `brew install python@3.11`
