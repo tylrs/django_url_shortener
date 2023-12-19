@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Url
 from django.urls import reverse
+import hashlib
 
 class ShrinkifyViewTests(TestCase):
     def test_successful_shrinkify(self):
@@ -22,12 +23,16 @@ class ShrinkifyViewTests(TestCase):
         """
         If the URL has already been shrinkified, it can be shrinkified again and will return a different short url
         """
+        long_url = "https://example.com"
+        hash_object = hashlib.new("shake_256")
+        hash_object.update(long_url.encode("UTF-8"))
+        hashed_string = hash_object.hexdigest(4)
         url = Url.objects.create(
-            short_url="https://byteaq.com/c002178",
-            long_url="https://example.com"
+            short_url=f"https://byteaq.com/{hashed_string}",
+            long_url=long_url
         )
     
-        params = {"shrinkify": "https://example.com"}
+        params = {"shrinkify": long_url}
         response = self.client.post(reverse("byteaq:shrinkify"), params, follow=True)
     
         self.assertEqual(response.context["url"].long_url, url.long_url)
