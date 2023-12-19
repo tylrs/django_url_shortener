@@ -15,7 +15,7 @@
       <label for="shrinkify"/>
       <input type="submit" value="Shrinkify"/>
     </form>
-    <form action="{% url 'byteaq:expand' %}" method="post">
+    <form action="{% url 'byteaq:expand' %}" method="get">
       {% csrf_token %}
       <input type="text" name="expand" id="expand"/>
       <label for="expand"/>

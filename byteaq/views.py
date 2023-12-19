@@ -40,8 +40,8 @@ def shrinkify(request):
     return HttpResponse(hashed_string)
 
 def expand(request):
-    print(f'1) REQUEST {request.POST["expand"]}')
-    short_url = request.POST["expand"]
+    print(f'1) REQUEST {request.GET["expand"]}')
+    short_url = request.GET["expand"]
     url = get_object_or_404(Url, short_url=short_url)
     print(f'Expand results {url}')
 
