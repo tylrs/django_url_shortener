@@ -10,11 +10,12 @@
         <h3>Make a Tiny Tiny URL</h3>
     </div>
     <form action="{% url 'byteaq:shrinkify' %}" method="post">
+      {% csrf_token %}
       <input type="text" name="shrinkify" id="shrinkify"/>
       <label for="shrinkify"/>
       <input type="submit" value="Shrinkify"/>
     </form>
-    <form action="{% url 'byteaq:expand' %}" method="post"></form>
+    <form action="{% url 'byteaq:expand' %}" method="post">
       {% csrf_token %}
       <input type="text" name="expand" id="expand"/>
       <label for="expand"/>
